@@ -1,0 +1,756 @@
+/* ============================================================
+   Oria — oriastudio.com
+   Tokens mirror Oria Design System B (dark mode).
+   Primitives are the adopted palette; components read semantics only.
+   ============================================================ */
+
+:root {
+  /* --- primitives: sand (warm neutral spine) --- */
+  --sand-25: #fdfcf9;
+  --sand-50: #faf7f0;
+  --sand-100: #f5f0e5;
+  --sand-200: #e5dcc9;
+  --sand-300: #d0c4ab;
+  --sand-400: #afa089;
+  --sand-500: #8a7c67;
+  --sand-600: #6d604e;
+  --sand-700: #53483a;
+  --sand-800: #3b332a;
+  --sand-850: #2d2721;
+  --sand-900: #221d18;
+  --sand-925: #1b1713;
+  --sand-950: #15120e;
+
+  /* --- primitives: gold "starlight" (guidance / focus) --- */
+  --gold-100: #fbf1d4;
+  --gold-200: #f7e4a9;
+  --gold-300: #f0d07b;
+  --gold-400: #e6ba4e;
+  --gold-500: #d8a62f;
+  --gold-600: #b58519;
+
+  /* --- primitives: twilight (possibility) & clay (tension, never alarm-red) --- */
+  --twilight-300: #9faecb;
+  --clay-300: #e0b1a0;
+
+  /* --- semantics: dark mode --- */
+  --surface-page: var(--sand-925);
+  --surface-raised: var(--sand-850);
+  --surface-sunken: var(--sand-950);
+  --text-primary: var(--sand-50);
+  --text-secondary: var(--sand-300);
+  --text-tertiary: var(--sand-400);
+  --text-on-accent: var(--sand-900);
+  --border-subtle: rgba(240, 208, 123, 0.12);
+  --border-default: rgba(240, 208, 123, 0.2);
+  --border-focus: var(--gold-400);
+  --accent-default: var(--gold-400);
+  --accent-emphasis: var(--gold-300);
+  --meaning-tension: var(--clay-300);
+  --meaning-grounded: var(--gold-200);
+
+  /* --- space & shape --- */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: var(--font-instrument-sans), ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, sans-serif;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(230, 186, 78, 0.28);
+  color: var(--sand-25);
+}
+
+/* ============================================================
+   Sky
+   ============================================================ */
+
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* The room the sky sits in. Four layers, listed top-down: a vignette that
+   lets the corners fall away so the copy keeps its contrast, an overhead
+   source up and to the left where the focal star is, a broad warm room light,
+   and a horizon lift from below — the same warm floor as the app's Home.
+   Every falloff is multi-stop; a single stop to `transparent` terminates
+   visibly as a ring. */
+.sky::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      82% 70% at 50% 46%,
+      rgba(21, 18, 14, 0) 38%,
+      rgba(21, 18, 14, 0.22) 74%,
+      rgba(21, 18, 14, 0.42) 100%
+    ),
+    radial-gradient(
+      66% 52% at 30% 4%,
+      rgba(240, 208, 123, 0.1) 0%,
+      rgba(240, 208, 123, 0.042) 34%,
+      rgba(240, 208, 123, 0) 72%
+    ),
+    radial-gradient(
+      98% 74% at 50% 32%,
+      rgba(230, 186, 78, 0.07) 0%,
+      rgba(230, 186, 78, 0.028) 44%,
+      rgba(230, 186, 78, 0) 78%
+    ),
+    radial-gradient(
+      132% 56% at 50% 106%,
+      rgba(181, 133, 25, 0.17) 0%,
+      rgba(109, 96, 78, 0.09) 38%,
+      rgba(109, 96, 78, 0) 76%
+    );
+}
+
+.sky__field {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  opacity: 0.9;
+}
+
+/* The bowl at window scale. Sized off the VIEWPORT, never off the copy: the
+   arc has to clear the headline's corners by a wide margin, which is the whole
+   point of using it instead of the arch. `vh` sets the radius to a bit over
+   half the window height; the `vw` floor keeps that margin on short, wide
+   windows. It is deliberately taller than the viewport and gets cropped top
+   and bottom, so the sweep continues past the frame.
+
+   Only shown at 1200×760 and up — see the breakpoint below. Below that the
+   copy fills too much of the window for any ring to clear it, and the arch
+   above the copy is the honest answer. */
+.sky__halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(156vh, 98vw);
+  aspect-ratio: 690 / 560;
+  transform: translate(-50%, -50%);
+  opacity: 0.94;
+  display: none;
+}
+
+/* ============================================================
+   Shell
+   ============================================================ */
+
+.shell {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* the artwork is wider than the copy column on purpose; clip rather than
+     let it extend the document and produce a horizontal scrollbar */
+  overflow-x: clip;
+  /* extra top padding pulls the block down against the halo's upward mass,
+     so the composition sits on the optical centre rather than the metric one */
+  padding: 120px 24px 48px;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* The arch crowns the copy. This is the default: it works at any size, and
+   large windows swap it for the window-scale bowl at the breakpoint below. */
+.hero__crown {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.92;
+  /* vw cap keeps the arc's end stars off the screen edge */
+  width: min(126%, 94vw);
+  aspect-ratio: 760 / 340;
+  transform: translate(-50%, -76%);
+}
+
+/* ============================================================
+   Copy
+   ============================================================ */
+
+.wordmark {
+  margin: 0 0 42px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  text-transform: uppercase;
+  color: var(--accent-emphasis);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(30px, 6vw, 50px);
+  line-height: 1.16;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.lede {
+  margin: 30px 0 0;
+  max-width: 42ch;
+  font-size: clamp(15px, 3.6vw, 18px);
+  line-height: 1.68;
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.meta {
+  margin: 46px 0 0;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  /* sand/400, not sand/600: at 11px this has to clear 4.5:1 on the page ground */
+  color: var(--text-tertiary);
+}
+
+/* ============================================================
+   Waitlist
+   ============================================================ */
+
+.waitlist {
+  width: 100%;
+  max-width: 440px;
+  margin-top: 56px;
+}
+
+.waitlist__row {
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.field {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 50px;
+  padding: 0 16px;
+  font: inherit;
+  font-size: 16px; /* keeps iOS from zooming on focus */
+  line-height: 50px;
+  color: var(--text-primary);
+  background: rgba(45, 39, 33, 0.66);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  outline: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:
+    border-color 200ms var(--ease),
+    box-shadow 200ms var(--ease),
+    background-color 200ms var(--ease);
+}
+
+.field::placeholder {
+  color: var(--sand-500);
+}
+
+/* visually hidden but still announced — for the input's real label */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.field:hover:not(:disabled) {
+  border-color: var(--border-default);
+}
+
+/* gold focus glow, per the composer input in the design system */
+.field:focus-visible {
+  border-color: var(--border-focus);
+  background: rgba(45, 39, 33, 0.9);
+  box-shadow: 0 0 0 3px rgba(230, 186, 78, 0.16);
+}
+
+.field[aria-invalid='true'] {
+  border-color: rgba(224, 177, 160, 0.5);
+}
+
+.submit {
+  flex: 0 0 auto;
+  height: 50px;
+  padding: 0 20px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  color: var(--text-on-accent);
+  background: var(--accent-default);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition:
+    background-color 200ms var(--ease),
+    transform 200ms var(--ease),
+    box-shadow 200ms var(--ease);
+  box-shadow: 0 6px 26px -12px rgba(230, 186, 78, 0.75);
+}
+
+.submit:hover:not(:disabled) {
+  background: var(--accent-emphasis);
+}
+
+.submit:active:not(:disabled) {
+  transform: translateY(1px);
+  background: var(--gold-500);
+}
+
+.submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(230, 186, 78, 0.26);
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* honeypot — off-screen, never announced, never tabbable */
+.trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.note {
+  margin: 14px 0 0;
+  min-height: 19px;
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--text-tertiary);
+  transition: color 200ms var(--ease);
+}
+
+.note[data-state='error'] {
+  color: var(--meaning-tension);
+}
+
+/* ============================================================
+   Confirmation — replaces the form in place, nothing dangles
+   ============================================================ */
+
+.done {
+  width: 100%;
+  max-width: 440px;
+  margin-top: 56px;
+  padding: 24px 26px;
+  text-align: center;
+  background: rgba(45, 39, 33, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: rise 460ms var(--ease) both;
+}
+
+.done__mark {
+  display: block;
+  margin: 0 auto 12px;
+  color: var(--accent-emphasis);
+}
+
+.done__title {
+  margin: 0;
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.done__body {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--text-secondary);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.foot {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 24px 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  align-items: baseline;
+  justify-content: center;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--text-tertiary);
+}
+
+.foot a {
+  color: var(--text-tertiary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition:
+    color 200ms var(--ease),
+    border-color 200ms var(--ease);
+}
+
+.foot a:hover {
+  color: var(--text-secondary);
+  border-bottom-color: var(--border-default);
+}
+
+.foot a:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   Motion — restrained. Stars breathe; nothing flashes.
+   ============================================================ */
+
+/* Each star carries its own duration from the generator, so the field never
+   pulses in lockstep — that is what makes a star field read as sky. */
+.oc-star {
+  animation: breathe var(--oc-d, 7.5s) var(--ease) infinite;
+  animation-delay: calc(var(--oc-i, 0) * -1.37s);
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: opacity;
+}
+
+.oc-star--focal {
+  animation-name: breathe-focal;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes breathe-focal {
+  0%,
+  100% {
+    opacity: 0.88;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.sky__field {
+  animation: drift 26s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from {
+    opacity: 0.72;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* the confirmation keeps its own `rise` — it appears on submit, not on load,
+   so it must not inherit the staggered entrance delay */
+.hero > *:not(.done) {
+  animation: enter 900ms var(--ease) both;
+}
+
+.wordmark {
+  animation-delay: 90ms;
+}
+h1 {
+  animation-delay: 170ms;
+}
+.lede {
+  animation-delay: 250ms;
+}
+.waitlist {
+  animation-delay: 330ms;
+}
+.meta {
+  animation-delay: 410ms;
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The artwork carries its own resting transform, so it fades in place rather
+   than sliding. The selector is child-qualified so this outranks the `enter`
+   rule above — otherwise `enter` animates transform and wipes the offsets. */
+.hero > .hero__crown {
+  animation: enter-halo 1500ms var(--ease) both;
+}
+
+.sky__halo {
+  animation: enter-sky 2200ms var(--ease) both;
+}
+
+@keyframes enter-sky {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.94;
+  }
+}
+
+/* the halo's resting transform differs per breakpoint, so it fades and
+   breathes in place rather than animating a hard-coded translate */
+@keyframes enter-halo {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.92;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ============================================================
+   Narrow screens
+   ============================================================ */
+
+@media (max-width: 520px) {
+  .shell {
+    /* the arch sits above the hero box, so the copy has to sit lower than the
+       metric centre for the whole composition to read as centred */
+    padding: 158px 22px 28px;
+  }
+
+  .wordmark {
+    margin-bottom: 22px;
+    font-size: 13px;
+  }
+
+  h1 {
+    font-size: clamp(28px, 8vw, 34px);
+  }
+
+  .meta {
+    margin-top: 28px;
+  }
+
+  .waitlist,
+  .done {
+    margin-top: 34px;
+  }
+
+  .waitlist__row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .submit {
+    width: 100%;
+    padding: 0 16px;
+  }
+}
+
+/* On the mid-size windows that still get the arch, its phone-tuned offset
+   would lift it off the top of the screen — there is far more room above the
+   copy here, so it grows and sits lower. */
+@media (min-width: 700px) {
+  .hero__crown {
+    width: min(112%, 860px);
+    transform: translate(-50%, -58%);
+  }
+}
+
+/* ============================================================
+   Large screens — the composition gets room, not just bigger type
+   ============================================================ */
+
+/* Where the bowl gets to run.
+
+   Its radius is max(156vh, 98vw) ÷ 3.08, and measured clearance from the
+   headline is about R minus half the copy block's diagonal. Asking for ~75px
+   of clearance means a window at least 802px tall OR at least 1276px wide.
+   Both gates also demand real height: under about 760px the page starts to
+   scroll, the meta line drifts down into the arc, and the measured clearance
+   collapses. Two blocks rather than one `or` query, for older engines.
+
+   Below that the arch stays. Shrinking the bowl to fit just parks it behind
+   the words, which is the thing it exists to avoid. */
+@media (min-width: 1024px) and (min-height: 802px) {
+  .hero__crown {
+    display: none;
+  }
+
+  .sky__halo {
+    display: block;
+  }
+}
+
+@media (min-width: 1276px) and (min-height: 760px) {
+  .hero__crown {
+    display: none;
+  }
+
+  .sky__halo {
+    display: block;
+  }
+}
+
+/* past here the bowl is large enough that the copy can take its full measure */
+@media (min-width: 1360px) {
+  .hero {
+    max-width: 620px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .shell {
+    padding: 136px 32px 56px;
+  }
+
+  .hero {
+    /* a touch narrower through the 1024–1359 band, so the bowl clears the
+       headline's corners there too */
+    max-width: 560px;
+  }
+
+  .wordmark {
+    margin-bottom: 52px;
+  }
+
+  .lede {
+    margin-top: 34px;
+  }
+
+  .waitlist,
+  .done {
+    margin-top: 64px;
+  }
+
+  .field,
+  .submit {
+    height: 56px;
+  }
+
+  .field {
+    padding: 0 20px;
+    line-height: 56px;
+  }
+
+  .submit {
+    padding: 0 26px;
+    font-size: 16px;
+  }
+
+  .waitlist__row {
+    gap: 16px;
+  }
+
+  .meta {
+    margin-top: 56px;
+  }
+
+  .foot {
+    max-width: 660px;
+    padding-bottom: 36px;
+  }
+}
