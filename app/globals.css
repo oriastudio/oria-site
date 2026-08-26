@@ -658,6 +658,13 @@ h1 {
     width: min(112%, 860px);
     transform: translate(-50%, -58%);
   }
+
+  /* wide enough that the hero column itself is the right measure: the lede
+     takes it and settles on two lines. The cap is the 620px hero's width in
+     ch, so a future hero change can't stretch this past a readable line. */
+  .lede {
+    max-width: 52ch;
+  }
 }
 
 /* ============================================================
