@@ -17,7 +17,7 @@ const instrumentSans = localFont({
   fallback: ['ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
 })
 
-const SITE = 'https://oriastudio.com'
+const SITE = 'https://oriastudio.ai'
 const TITLE = 'Oria'
 const TAGLINE = 'Navigate the relationships that matter.'
 const DESCRIPTION =

@@ -5,7 +5,7 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 const TO = process.env.WAITLIST_TO || 'hello@oriastudio.ai'
-const FROM = process.env.WAITLIST_FROM || 'Oria Waitlist <waitlist@oriastudio.com>'
+const FROM = process.env.WAITLIST_FROM || 'Oria Waitlist <waitlist@oriastudio.ai>'
 
 // Conservative, single-@ address check. Length-capped before the regex so a
 // pathological input can't spend time in the matcher.

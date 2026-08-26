@@ -1,4 +1,4 @@
-# oriastudio.com
+# oriastudio.ai
 
 The Oria teaser site. One page: the wordmark, the line, a sentence, and a
 waitlist. No feature list, no screenshots, no mechanics.
@@ -33,10 +33,10 @@ Signups arrive as email — there is no database, so this step is what makes
 the form work at all.
 
 1. Sign in at <https://resend.com> with the Oria account.
-2. **Domains → Add Domain → `oriastudio.com`.** Resend shows three DNS
+2. **Domains → Add Domain → `oriastudio.ai`.** Resend shows three DNS
    records (an MX and two TXT: SPF and DKIM). Add them wherever
-   `oriastudio.com`'s DNS lives, then click Verify. This is what lets mail be
-   sent *from* `waitlist@oriastudio.com`.
+   `oriastudio.ai`'s DNS lives, then click Verify. This is what lets mail be
+   sent *from* `waitlist@oriastudio.ai`.
 3. **API Keys → Create API Key**, sending permission only. Copy it once —
    Resend won't show it again.
 
@@ -56,7 +56,7 @@ flow works, then move to the verified domain before launch.
    | ---------------- | ------------------------------------------- |
    | `RESEND_API_KEY` | the key from step 2                         |
    | `WAITLIST_TO`    | `hello@oriastudio.ai`                       |
-   | `WAITLIST_FROM`  | `Oria Waitlist <waitlist@oriastudio.com>`   |
+   | `WAITLIST_FROM`  | `Oria Waitlist <waitlist@oriastudio.ai>`   |
 
 3. Deploy.
 
@@ -64,10 +64,10 @@ flow works, then move to the verified domain before launch.
 > form returns a polite "not accepting signups just yet" rather than pretending
 > to succeed. Add the variable and redeploy to switch it on.
 
-### 4. Point oriastudio.com at it
+### 4. Point oriastudio.ai at it
 
-Vercel project → **Settings → Domains → Add** → `oriastudio.com`. Add
-`www.oriastudio.com` too and let Vercel redirect it to the apex.
+Vercel project → **Settings → Domains → Add** → `oriastudio.ai`. Add
+`www.oriastudio.ai` too and let Vercel redirect it to the apex.
 
 Vercel then names the DNS records to create at your registrar — usually an
 `A` record for the apex at `76.76.21.21` and a `CNAME` for `www` at
