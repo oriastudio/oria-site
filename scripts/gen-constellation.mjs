@@ -63,12 +63,18 @@ const C = {
 // one endRadius off the WIDTH, so the shorter vertical edge would otherwise
 // cut. An SVG radial gradient in objectBoundingBox units fades to zero on both
 // axes on its own, so the feathered edge is already there without a filter.
+// Radii, not width/height pairs. HorizonStar's blooms are about 1.5:1 wide
+// because they sit in a 166.5x164 zone above a Space label, where a horizontal
+// smear of light is the point. That eccentricity belongs to the Home field, not
+// to a star: the brand mark's own constellation halo is a plain circle (r=19.5
+// in DesignReferences/Logo-adopted.svg), and on an arc a 1.5:1 bloom reads as
+// squished. Keep the app's three nested layers and its opacities — that is the
+// depth — and take the round shape from the mark.
 const BLOOMS = [
-  { w: 0.84, h: 0.52, op: 0.52 },
-  { w: 0.52, h: 0.34, op: 0.62 },
-  { w: 0.22, h: 0.15, op: 0.92 },
+  { r: 0.84, op: 0.52 },
+  { r: 0.52, op: 0.62 },
+  { r: 0.22, op: 0.92 },
 ]
-const ZONE_ASPECT = 164 / 166.5
 // Warm light on a near-black page needs a little more of itself to read as the
 // same light it is on cream. The app's own figure.
 const DARK_GAIN = 1.18
@@ -277,8 +283,11 @@ function build(cfg) {
     // off their own brightness rather than a floor, so the sweep keeps its
     // hierarchy instead of reading as a necklace of identical smudges.
     const zoneW =
-      s.tier === 'focal' ? brightR * 2.7 : s.tier === 'second' ? brightR * 1.32 : s.d * 3.2
-    const zoneH = zoneW * ZONE_ASPECT
+      s.tier === 'focal' ? brightR * 2.05 : s.tier === 'second' ? brightR * 1.12 : s.d * 2.7
+    // Round, but not machined: one eccentricity per star, a few percent either
+    // side of a circle. A field of perfect circles reads as printed dots, and
+    // the system asks for organic asymmetry.
+    const ecc = pick(0.95, 1.06)
     // Tier is opacity, not a different construction — one treatment for one
     // concern, so the focal star is the same light, turned up.
     const tierGain = s.tier === 'focal' ? 1 : s.tier === 'second' ? 0.76 : 0.5
@@ -293,11 +302,12 @@ function build(cfg) {
       // asks for organic asymmetry — so the offset comes off the same seeded
       // stream as everything else and no two stars sit the same way.
       const dx = i === 0 ? 0 : (rnd() * 2 - 1) * zoneW * 0.04
-      const dy = i === 0 ? 0 : (rnd() * 2 - 1) * zoneH * 0.055
+      const dy = i === 0 ? 0 : (rnd() * 2 - 1) * zoneW * 0.04
+      const rx = (zoneW * b.r) / 2
       push(
-        `        <ellipse cx="${n(s.x + dx)}" cy="${n(s.y + dy)}" rx="${n(
-          (zoneW * b.w) / 2,
-        )}" ry="${n((zoneH * b.h) / 2)}" fill="url(#${id('halo')})" opacity="${n(
+        `        <ellipse cx="${n(s.x + dx)}" cy="${n(s.y + dy)}" rx="${n(rx)}" ry="${n(
+          rx * ecc,
+        )}" fill="url(#${id('halo')})" opacity="${n(
           Math.min(1, b.op * DARK_GAIN * tierGain),
         )}" />`,
       )
