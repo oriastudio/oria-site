@@ -53,6 +53,11 @@
   --r-sm: 10px;
   --r-md: 14px;
   --r-lg: 20px;
+
+  /* Sky above the bowl's highest star, and below its lowest. The bowl is hung
+     from its crown by these, not centred — see .sky__halo. */
+  --halo-crown-inset: 72px;
+  --halo-tail-inset: 24px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 
   color-scheme: dark;
@@ -154,19 +159,40 @@ body {
    arc has to clear the headline's corners by a wide margin, which is the whole
    point of using it instead of the arch. `vh` sets the radius to a bit over
    half the window height; the `vw` floor keeps that margin on short, wide
-   windows. It is deliberately taller than the viewport and gets cropped top
-   and bottom, so the sweep continues past the frame.
+   windows.
+
+   Hung from its crown, not centred on the window. All of the drawing lives in
+   the top of the viewBox — the highest star's halo sits at 9.8% of the box's
+   height and the lowest at 71.6%, so the bottom quarter is empty dust. A box
+   this much taller than the window therefore has to choose which end to crop,
+   and centring chose the half that carries the arc: at 1600×804 the crown
+   landed 109px ABOVE the top edge and the bowl read as two arcs sliced off by
+   the frame. Anchoring to that 9.8% line instead puts the crown a fixed inset
+   below the top edge at every window size, and spends the crop on the empty
+   bottom.
+
+   The width cap is the other half of the same rule: the `vw` floor can ask for
+   a box far taller than the window, and once the crown is pinned it is the
+   lower tails that fall out of frame. 0.618 is the drawing's own span
+   (71.6% − 9.8%), so the cap is exactly "the drawing fits between the two
+   insets" — and 690/560 turns that height back into the width the box is
+   sized by. On windows with room to spare the cap never binds.
 
    Only shown at 1200×760 and up — see the breakpoint below. Below that the
    copy fills too much of the window for any ring to clear it, and the arch
    above the copy is the honest answer. */
 .sky__halo {
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 50%;
-  width: max(156vh, 98vw);
+  width: min(
+    max(156vh, 98vw),
+    calc(
+      (100vh - var(--halo-crown-inset) - var(--halo-tail-inset)) / 0.618 * 690 / 560
+    )
+  );
   aspect-ratio: 690 / 560;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, calc(var(--halo-crown-inset) - 9.8%));
   opacity: 0.94;
   display: none;
 }
@@ -759,5 +785,54 @@ h1 {
   .foot {
     max-width: 660px;
     padding-bottom: 36px;
+  }
+}
+
+/* ============================================================
+   Short desktop windows — the band the bookmarks bar creates
+   ============================================================ */
+
+/* A 13–16" laptop gives Chrome about 690–760px of viewport once the tab strip,
+   the address bar and a shown bookmarks bar are taken out, and the rhythm
+   above assumes ~800. Two things break in that band, both of them the same
+   mistake — a fixed vertical budget in a window that no longer has it:
+
+     · the page runs 54px past the fold, so `iOS · Closed beta` and the footer
+       fall off a teaser that is meant to be exactly one screen, and
+     · the arch is hung 162px above the hero, which is more room than the
+       shell's top padding leaves it, so its focal star is sliced by the top
+       edge — the arch is on screen but its crown is not.
+
+   Fixing only the overflow makes the clipping worse, since the obvious way to
+   claw back height is the top padding the arch is hanging from. So the top
+   padding GROWS here and the height comes out of the internal rhythm instead:
+   the gaps between wordmark, lede, form and meta each give up a few pixels,
+   which nobody reads as tight, and the arch gets the headroom it was always
+   drawn to need. */
+@media (min-width: 1024px) and (max-height: 780px) {
+  .shell {
+    padding-top: 150px;
+    padding-bottom: 32px;
+  }
+
+  .wordmark {
+    margin-bottom: 40px;
+  }
+
+  .lede {
+    margin-top: 28px;
+  }
+
+  .waitlist,
+  .done {
+    margin-top: 52px;
+  }
+
+  .meta {
+    margin-top: 45px;
+  }
+
+  .foot {
+    padding-bottom: 24px;
   }
 }

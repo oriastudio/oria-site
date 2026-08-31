@@ -43,6 +43,50 @@ const C = {
   dim: '#6D604E', // sand/600
 }
 
+// The star, from two adopted sources rather than one.
+//
+// SHAPE comes from HorizonStar in the iOS app
+// (Oria/Features/Home/HomeHorizonField.swift): three nested elliptical blooms,
+// listed outside in as fractions of the star's zone, with the app's own
+// opacities. No drawn star, no outline, no filled core — the silhouette is the
+// sum of three overlapping gradients, which is what makes it read as light
+// instead of as a glyph. This is also what Oria's visual system asks for in so
+// many words: diffused low-contrast halos, feathered luminosity, gentle depth,
+// and never a crisp filled path or an opaque circular core.
+//
+// COLOUR comes from the brand mark's constellation halo
+// (DesignReferences/Logo-adopted.svg, Figma node 4615:3335): warmer and more
+// amber than the page's own gold ramp, and deliberately so — this arc is brand
+// artwork, so it glows in the brand's amber rather than the UI's gold.
+//
+// The app blurs each bloom (18/10/4pt on a 166.5pt zone) because SwiftUI takes
+// one endRadius off the WIDTH, so the shorter vertical edge would otherwise
+// cut. An SVG radial gradient in objectBoundingBox units fades to zero on both
+// axes on its own, so the feathered edge is already there without a filter.
+const BLOOMS = [
+  { w: 0.84, h: 0.52, op: 0.52 },
+  { w: 0.52, h: 0.34, op: 0.62 },
+  { w: 0.22, h: 0.15, op: 0.92 },
+]
+const ZONE_ASPECT = 164 / 166.5
+// Warm light on a near-black page needs a little more of itself to read as the
+// same light it is on cream. The app's own figure.
+const DARK_GAIN = 1.18
+
+// The brand halo's ramp, normalised so its brightest stop is 1. The mark peaks
+// this ramp at 0.55; here the bloom's own opacity is what sets each layer's
+// alpha, exactly as HorizonStar does it. Keeping both would attenuate twice and
+// the outer layers would all but vanish — the hues and their positions are the
+// part worth carrying over, not the mark's single-layer alpha.
+const STAR = {
+  nucleus: '#FFF9E8',
+  halo: [
+    ['0%', '#FFD487', 1],
+    ['35%', '#D69338', 0.33],
+    ['100%', '#8B4D14', 0],
+  ],
+}
+
 const rad = (d) => (d * Math.PI) / 180
 const n = (v) => Math.round(v * 100) / 100
 
@@ -118,17 +162,21 @@ function build(cfg) {
     push(`      <stop offset="100%" stopColor="${g.color}" stopOpacity="0" />`)
     push(`    </radialGradient>`)
   })
-  for (const [key, inner, mid] of [
-    ['h-quiet', 0.24, 0.07],
-    ['h-second', 0.4, 0.12],
-    ['h-focal', 0.62, 0.2],
-  ]) {
-    push(`    <radialGradient id="${id(key)}" cx="50%" cy="50%" r="50%">`)
-    push(`      <stop offset="0%" stopColor="${C.core}" stopOpacity="${inner}" />`)
-    push(`      <stop offset="40%" stopColor="${C.gold}" stopOpacity="${mid}" />`)
-    push(`      <stop offset="100%" stopColor="${C.gold}" stopOpacity="0" />`)
-    push(`    </radialGradient>`)
+  // The adopted halo, one gradient shared by every star exactly as the brand
+  // artwork shares it. Amber through the falloff, gone by the edge.
+  push(`    <radialGradient id="${id('halo')}" cx="50%" cy="50%" r="50%">`)
+  for (const [offset, color, op] of STAR.halo) {
+    push(`      <stop offset="${offset}" stopColor="${color}" stopOpacity="${op}" />`)
   }
+  push(`    </radialGradient>`)
+  // The nucleus. The person-star contract wants a perceptible ivory-gold core
+  // separated from the quieter field — so it stays, but as its own soft
+  // gradient rather than the mark's filled dot.
+  push(`    <radialGradient id="${id('nucleus')}" cx="50%" cy="50%" r="50%">`)
+  push(`      <stop offset="0%" stopColor="${STAR.nucleus}" stopOpacity="0.9" />`)
+  push(`      <stop offset="40%" stopColor="${C.core}" stopOpacity="0.38" />`)
+  push(`      <stop offset="100%" stopColor="${C.gold}" stopOpacity="0" />`)
+  push(`    </radialGradient>`)
   push(`  </defs>`)
 
   // ---- glow: several offset ellipses, never one symmetric blob --------
@@ -220,33 +268,44 @@ function build(cfg) {
   push(`  </g>`)
 
   // ---- stars ----------------------------------------------------------
+  // Three nested blooms and a nucleus. Nothing here has an edge.
   push(``)
   push(`  <g className="oc-stars">`)
   for (const s of stars) {
-    const haloR =
-      s.tier === 'focal' ? brightR : s.tier === 'second' ? brightR * 0.58 : 6.5 + s.d * 1.45
-    const grad = s.tier === 'focal' ? 'h-focal' : s.tier === 'second' ? 'h-second' : 'h-quiet'
+    // The star's zone, in viewBox units. The outermost bloom spans 0.84 of it,
+    // so a zone is a little wider than the light it holds. Quiet stars scale
+    // off their own brightness rather than a floor, so the sweep keeps its
+    // hierarchy instead of reading as a necklace of identical smudges.
+    const zoneW =
+      s.tier === 'focal' ? brightR * 2.7 : s.tier === 'second' ? brightR * 1.32 : s.d * 3.2
+    const zoneH = zoneW * ZONE_ASPECT
+    // Tier is opacity, not a different construction — one treatment for one
+    // concern, so the focal star is the same light, turned up.
+    const tierGain = s.tier === 'focal' ? 1 : s.tier === 'second' ? 0.76 : 0.5
+
     push(
       `    <g className="oc-star oc-star--${s.tier}" style={{ '--oc-i': ${s.i}, '--oc-d': '${s.dur}s' } as CSSProperties}>`,
     )
     push(`      <g opacity="${s.fade}">`)
-    push(`        <circle cx="${n(s.x)}" cy="${n(s.y)}" r="${n(haloR)}" fill="url(#${id(grad)})" />`)
-    if (s.tier !== 'quiet') {
-      // sparkle cross — full length on the focal star, a short one on seconds
-      const arm = s.tier === 'focal' ? brightR / 2 : brightR * 0.24
-      const w = s.tier === 'focal' ? 1.5 : 1.1
-      const op = s.tier === 'focal' ? 0.85 : 0.5
+    BLOOMS.forEach((b, i) => {
+      // Each layer drifts a little off the one under it. The app stacks them
+      // concentrically; at this scale that reads as a target, and the system
+      // asks for organic asymmetry — so the offset comes off the same seeded
+      // stream as everything else and no two stars sit the same way.
+      const dx = i === 0 ? 0 : (rnd() * 2 - 1) * zoneW * 0.04
+      const dy = i === 0 ? 0 : (rnd() * 2 - 1) * zoneH * 0.055
       push(
-        `        <g stroke="${C.core}" strokeWidth="${w}" strokeLinecap="round" opacity="${op}">`,
+        `        <ellipse cx="${n(s.x + dx)}" cy="${n(s.y + dy)}" rx="${n(
+          (zoneW * b.w) / 2,
+        )}" ry="${n((zoneH * b.h) / 2)}" fill="url(#${id('halo')})" opacity="${n(
+          Math.min(1, b.op * DARK_GAIN * tierGain),
+        )}" />`,
       )
-      push(`          <line x1="${n(s.x - arm)}" y1="${n(s.y)}" x2="${n(s.x + arm)}" y2="${n(s.y)}" />`)
-      push(`          <line x1="${n(s.x)}" y1="${n(s.y - arm)}" x2="${n(s.x)}" y2="${n(s.y + arm)}" />`)
-      push(`        </g>`)
-    }
+    })
     push(
-      `        <circle cx="${n(s.x)}" cy="${n(s.y)}" r="${n(s.d / 2)}" fill="${
-        s.tier === 'focal' ? C.pale : s.tier === 'second' ? C.core : C.line
-      }" opacity="${n(s.op)}" />`,
+      `        <circle cx="${n(s.x)}" cy="${n(s.y)}" r="${n(s.d * 0.66)}" fill="url(#${id(
+        'nucleus',
+      )})" opacity="${n(s.op)}" />`,
     )
     if (s.companion) {
       push(

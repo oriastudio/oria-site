@@ -14,19 +14,14 @@ export default function ConstellationCrown({ className }: { className?: string }
       focusable="false"
     >
       <defs>
-        <radialGradient id="oc-h-quiet" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#F7E4A9" stopOpacity="0.24" />
-          <stop offset="40%" stopColor="#E6BA4E" stopOpacity="0.07" />
-          <stop offset="100%" stopColor="#E6BA4E" stopOpacity="0" />
+        <radialGradient id="oc-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FFD487" stopOpacity="1" />
+          <stop offset="35%" stopColor="#D69338" stopOpacity="0.33" />
+          <stop offset="100%" stopColor="#8B4D14" stopOpacity="0" />
         </radialGradient>
-        <radialGradient id="oc-h-second" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#F7E4A9" stopOpacity="0.4" />
-          <stop offset="40%" stopColor="#E6BA4E" stopOpacity="0.12" />
-          <stop offset="100%" stopColor="#E6BA4E" stopOpacity="0" />
-        </radialGradient>
-        <radialGradient id="oc-h-focal" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#F7E4A9" stopOpacity="0.62" />
-          <stop offset="40%" stopColor="#E6BA4E" stopOpacity="0.2" />
+        <radialGradient id="oc-nucleus" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FFF9E8" stopOpacity="0.9" />
+          <stop offset="40%" stopColor="#F7E4A9" stopOpacity="0.38" />
           <stop offset="100%" stopColor="#E6BA4E" stopOpacity="0" />
         </radialGradient>
       </defs>
@@ -198,73 +193,85 @@ export default function ConstellationCrown({ className }: { className?: string }
       <g className="oc-stars">
         <g className="oc-star oc-star--quiet" style={{ '--oc-i': 0, '--oc-d': '10.48s' } as CSSProperties}>
           <g opacity="0.75">
-            <circle cx="78.05" cy="210.47" r="12.48" fill="url(#oc-h-quiet)" />
-            <circle cx="78.05" cy="210.47" r="2.06" fill="#F0D07B" opacity="0.73" />
+            <ellipse cx="78.05" cy="210.47" rx="5.54" ry="3.38" fill="url(#oc-halo)" opacity="0.31" />
+            <ellipse cx="77.98" cy="209.76" rx="3.43" ry="2.21" fill="url(#oc-halo)" opacity="0.37" />
+            <ellipse cx="77.85" cy="209.88" rx="1.45" ry="0.97" fill="url(#oc-halo)" opacity="0.54" />
+            <circle cx="78.05" cy="210.47" r="2.72" fill="url(#oc-nucleus)" opacity="0.73" />
           </g>
         </g>
         <g className="oc-star oc-star--quiet" style={{ '--oc-i': 1, '--oc-d': '9.32s' } as CSSProperties}>
           <g opacity="0.84">
-            <circle cx="110.5" cy="155.93" r="10.36" fill="url(#oc-h-quiet)" />
-            <circle cx="110.5" cy="155.93" r="1.33" fill="#F0D07B" opacity="0.9" />
+            <ellipse cx="110.5" cy="155.93" rx="3.58" ry="2.18" fill="url(#oc-halo)" opacity="0.31" />
+            <ellipse cx="110.76" cy="155.65" rx="2.22" ry="1.43" fill="url(#oc-halo)" opacity="0.37" />
+            <ellipse cx="110.21" cy="155.89" rx="0.94" ry="0.63" fill="url(#oc-halo)" opacity="0.54" />
+            <circle cx="110.5" cy="155.93" r="1.76" fill="url(#oc-nucleus)" opacity="0.9" />
             <circle cx="113.86" cy="147.44" r="0.73" fill="#F0D07B" opacity="0.28" />
           </g>
         </g>
         <g className="oc-star oc-star--quiet" style={{ '--oc-i': 2, '--oc-d': '8.37s' } as CSSProperties}>
           <g opacity="0.92">
-            <circle cx="178.01" cy="128.28" r="12.78" fill="url(#oc-h-quiet)" />
-            <circle cx="178.01" cy="128.28" r="2.16" fill="#F0D07B" opacity="0.9" />
+            <ellipse cx="178.01" cy="128.28" rx="5.82" ry="3.55" fill="url(#oc-halo)" opacity="0.31" />
+            <ellipse cx="178.43" cy="128.97" rx="3.6" ry="2.32" fill="url(#oc-halo)" opacity="0.37" />
+            <ellipse cx="177.89" cy="128.11" rx="1.52" ry="1.02" fill="url(#oc-halo)" opacity="0.54" />
+            <circle cx="178.01" cy="128.28" r="2.86" fill="url(#oc-nucleus)" opacity="0.9" />
           </g>
         </g>
         <g className="oc-star oc-star--focal" style={{ '--oc-i': 3, '--oc-d': '7.95s' } as CSSProperties}>
           <g opacity="1">
-            <circle cx="275.29" cy="69.13" r="30" fill="url(#oc-h-focal)" />
-            <g stroke="#F7E4A9" strokeWidth="1.5" strokeLinecap="round" opacity="0.85">
-              <line x1="260.29" y1="69.13" x2="290.29" y2="69.13" />
-              <line x1="275.29" y1="54.13" x2="275.29" y2="84.13" />
-            </g>
-            <circle cx="275.29" cy="69.13" r="4.5" fill="#FBF1D4" opacity="1" />
+            <ellipse cx="275.29" cy="69.13" rx="34.02" ry="20.74" fill="url(#oc-halo)" opacity="0.61" />
+            <ellipse cx="276.59" cy="70.14" rx="21.06" ry="13.56" fill="url(#oc-halo)" opacity="0.73" />
+            <ellipse cx="273.18" cy="67.22" rx="8.91" ry="5.98" fill="url(#oc-halo)" opacity="1" />
+            <circle cx="275.29" cy="69.13" r="5.94" fill="url(#oc-nucleus)" opacity="1" />
           </g>
         </g>
         <g className="oc-star oc-star--quiet" style={{ '--oc-i': 4, '--oc-d': '8.97s' } as CSSProperties}>
           <g opacity="0.92">
-            <circle cx="351.59" cy="69.2" r="13.03" fill="url(#oc-h-quiet)" />
-            <circle cx="351.59" cy="69.2" r="2.25" fill="#F0D07B" opacity="0.88" />
+            <ellipse cx="351.59" cy="69.2" rx="6.05" ry="3.69" fill="url(#oc-halo)" opacity="0.31" />
+            <ellipse cx="351.45" cy="68.71" rx="3.75" ry="2.41" fill="url(#oc-halo)" opacity="0.37" />
+            <ellipse cx="351.78" cy="68.68" rx="1.58" ry="1.06" fill="url(#oc-halo)" opacity="0.54" />
+            <circle cx="351.59" cy="69.2" r="2.97" fill="url(#oc-nucleus)" opacity="0.88" />
             <circle cx="360.69" cy="75.9" r="0.53" fill="#F0D07B" opacity="0.3" />
           </g>
         </g>
         <g className="oc-star oc-star--quiet" style={{ '--oc-i': 5, '--oc-d': '6.8s' } as CSSProperties}>
           <g opacity="0.84">
-            <circle cx="429.8" cy="57.6" r="11.66" fill="url(#oc-h-quiet)" />
-            <circle cx="429.8" cy="57.6" r="1.78" fill="#F0D07B" opacity="0.88" />
+            <ellipse cx="429.8" cy="57.6" rx="4.78" ry="2.92" fill="url(#oc-halo)" opacity="0.31" />
+            <ellipse cx="430.02" cy="57.79" rx="2.96" ry="1.91" fill="url(#oc-halo)" opacity="0.37" />
+            <ellipse cx="429.55" cy="57.71" rx="1.25" ry="0.84" fill="url(#oc-halo)" opacity="0.54" />
+            <circle cx="429.8" cy="57.6" r="2.35" fill="url(#oc-nucleus)" opacity="0.88" />
           </g>
         </g>
         <g className="oc-star oc-star--quiet" style={{ '--oc-i': 6, '--oc-d': '10.44s' } as CSSProperties}>
           <g opacity="0.75">
-            <circle cx="474.67" cy="69.65" r="11.73" fill="url(#oc-h-quiet)" />
-            <circle cx="474.67" cy="69.65" r="1.8" fill="#F0D07B" opacity="0.62" />
+            <ellipse cx="474.67" cy="69.65" rx="4.85" ry="2.96" fill="url(#oc-halo)" opacity="0.31" />
+            <ellipse cx="474.57" cy="69.16" rx="3" ry="1.93" fill="url(#oc-halo)" opacity="0.37" />
+            <ellipse cx="474.52" cy="69.99" rx="1.27" ry="0.85" fill="url(#oc-halo)" opacity="0.54" />
+            <circle cx="474.67" cy="69.65" r="2.38" fill="url(#oc-nucleus)" opacity="0.62" />
             <circle cx="471.5" cy="65.07" r="0.74" fill="#F0D07B" opacity="0.39" />
           </g>
         </g>
         <g className="oc-star oc-star--second" style={{ '--oc-i': 7, '--oc-d': '8.62s' } as CSSProperties}>
           <g opacity="0.66">
-            <circle cx="579.11" cy="106.26" r="17.4" fill="url(#oc-h-second)" />
-            <g stroke="#F7E4A9" strokeWidth="1.1" strokeLinecap="round" opacity="0.5">
-              <line x1="571.91" y1="106.26" x2="586.31" y2="106.26" />
-              <line x1="579.11" y1="99.06" x2="579.11" y2="113.46" />
-            </g>
-            <circle cx="579.11" cy="106.26" r="2.48" fill="#F7E4A9" opacity="1" />
+            <ellipse cx="579.11" cy="106.26" rx="16.63" ry="10.14" fill="url(#oc-halo)" opacity="0.47" />
+            <ellipse cx="577.67" cy="104.84" rx="10.3" ry="6.63" fill="url(#oc-halo)" opacity="0.56" />
+            <ellipse cx="579.15" cy="105.83" rx="4.36" ry="2.93" fill="url(#oc-halo)" opacity="0.83" />
+            <circle cx="579.11" cy="106.26" r="3.28" fill="url(#oc-nucleus)" opacity="1" />
           </g>
         </g>
         <g className="oc-star oc-star--quiet" style={{ '--oc-i': 8, '--oc-d': '6.43s' } as CSSProperties}>
           <g opacity="0.54">
-            <circle cx="649.58" cy="168.4" r="12.18" fill="url(#oc-h-quiet)" />
-            <circle cx="649.58" cy="168.4" r="1.96" fill="#F0D07B" opacity="0.71" />
+            <ellipse cx="649.58" cy="168.4" rx="5.26" ry="3.21" fill="url(#oc-halo)" opacity="0.31" />
+            <ellipse cx="649.63" cy="168.18" rx="3.26" ry="2.1" fill="url(#oc-halo)" opacity="0.37" />
+            <ellipse cx="649.5" cy="169.07" rx="1.38" ry="0.93" fill="url(#oc-halo)" opacity="0.54" />
+            <circle cx="649.58" cy="168.4" r="2.58" fill="url(#oc-nucleus)" opacity="0.71" />
           </g>
         </g>
         <g className="oc-star oc-star--quiet" style={{ '--oc-i': 9, '--oc-d': '10.22s' } as CSSProperties}>
           <g opacity="0.36">
-            <circle cx="678.12" cy="213.35" r="9.95" fill="url(#oc-h-quiet)" />
-            <circle cx="678.12" cy="213.35" r="1.19" fill="#F0D07B" opacity="0.65" />
+            <ellipse cx="678.12" cy="213.35" rx="3.19" ry="1.95" fill="url(#oc-halo)" opacity="0.31" />
+            <ellipse cx="678.2" cy="213.18" rx="1.98" ry="1.27" fill="url(#oc-halo)" opacity="0.37" />
+            <ellipse cx="678.17" cy="213.66" rx="0.84" ry="0.56" fill="url(#oc-halo)" opacity="0.54" />
+            <circle cx="678.12" cy="213.35" r="1.57" fill="url(#oc-nucleus)" opacity="0.65" />
           </g>
         </g>
       </g>
