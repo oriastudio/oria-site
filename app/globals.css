@@ -56,7 +56,7 @@
 
   /* Sky above the bowl's highest star, and below its lowest. The bowl is hung
      from its crown by these, not centred — see .sky__halo. */
-  --halo-crown-inset: 72px;
+  --halo-crown-inset: 44px;
   --halo-tail-inset: 24px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 
