@@ -247,14 +247,10 @@ body {
    ============================================================ */
 
 .wordmark {
+  display: block;
+  width: auto;
+  height: 20px;
   margin: 0 0 42px;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-  letter-spacing: 0.42em;
-  text-indent: 0.42em;
-  text-transform: uppercase;
-  color: var(--accent-emphasis);
 }
 
 h1 {
@@ -649,7 +645,6 @@ h1 {
 
   .wordmark {
     margin-bottom: 22px;
-    font-size: 13px;
   }
 
   h1 {

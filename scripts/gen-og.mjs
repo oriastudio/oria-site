@@ -50,7 +50,7 @@ const browser = await chromium.launch({
 })
 const ctx = await browser.newContext({
   viewport: { width: 1200, height: 630 },
-  deviceScaleFactor: 2,
+  deviceScaleFactor: 1,
 })
 const page = await ctx.newPage()
 await page.goto(URL, { waitUntil: 'networkidle' })

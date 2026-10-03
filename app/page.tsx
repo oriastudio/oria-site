@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import ConstellationCrown from '@/components/ConstellationCrown'
 import SkyHalo from '@/components/SkyHalo'
 import StarField from '@/components/StarField'
@@ -19,7 +20,15 @@ export default function Home() {
               framed by the window-scale bowl in .sky instead */}
           <ConstellationCrown className="hero__crown" />
 
-          <p className="wordmark">Oria</p>
+          <Image
+            className="wordmark"
+            src="/oria-wordmark.svg"
+            alt="Oria"
+            width={127}
+            height={35}
+            loading="eager"
+            unoptimized
+          />
 
           <h1>Navigate the relationships that matter.</h1>
 
