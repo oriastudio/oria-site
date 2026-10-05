@@ -21,11 +21,10 @@ export default function Home() {
 
           <p className="wordmark">Oria</p>
 
-          <h1>Navigate the relationships that matter.</h1>
+          <h1>Become better with people.</h1>
 
           <p className="lede">
-            A private space for making sense of what&rsquo;s happening with the people in your
-            life &mdash; and for seeing the bigger picture over time.
+            Work through difficult situations and build practical people skills.
           </p>
 
           <Waitlist />
