@@ -21,14 +21,14 @@ const SITE = 'https://oriastudio.ai'
 const TITLE = 'Oria'
 const TAGLINE = 'Become better with people.'
 const DESCRIPTION =
-  'Work through difficult situations and build practical people skills. iOS, in closed beta.'
+  'Oria is a personal social intelligence app. Work through difficult situations and build practical people skills. iOS, in closed beta.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: { default: `${TITLE} — ${TAGLINE}`, template: `%s — ${TITLE}` },
   description: DESCRIPTION,
   applicationName: TITLE,
-  keywords: ['Oria', 'people skills', 'relationships', 'private', 'iOS'],
+  keywords: ['Oria', 'social intelligence', 'people skills', 'interpersonal skills', 'relationships', 'private', 'iOS'],
   authors: [{ name: 'Oria Studio LLC' }],
   creator: 'Oria Studio LLC',
   alternates: { canonical: '/' },
