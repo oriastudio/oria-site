@@ -21,7 +21,7 @@ const SITE = 'https://oriastudio.ai'
 const TITLE = 'Oria'
 const TAGLINE = 'Become better with people.'
 const DESCRIPTION =
-  'Oria is a personal social intelligence app. Work through difficult situations and build practical people skills. iOS, in closed beta.'
+  'Oria is a personal social intelligence app. Work through the difficult situations in your life and build practical people skills. iOS, in closed beta.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),

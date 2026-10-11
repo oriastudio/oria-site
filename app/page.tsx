@@ -33,7 +33,7 @@ export default function Home() {
           <h1>Become better with people.</h1>
 
           <p className="lede">
-            Work through difficult situations and build practical people skills.
+            Work through the difficult situations in your life and build practical people skills.
           </p>
 
           <Waitlist />

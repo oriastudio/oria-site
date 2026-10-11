@@ -17,7 +17,7 @@ The public brand pair remains:
 
 > Become better with people.
 >
-> Work through difficult situations and build practical people skills.
+> Work through the difficult situations in your life and build practical people skills.
 
 Relationships may be an acquisition wedge; they do not define the entire app category. Use the pitch for founder and investor introductions, and the brand pair for this teaser page. Self-development is an intended outcome, not the product category. The positioning does not certify shipped practice features or proven learning outcomes. Current product scope remains owned by the [canonical Oria document](https://docs.google.com/document/d/16sk0OOR3Hqsb0aEJKO2Fo808K-eC5m4nBeCy0G_yk2s/edit).
 
