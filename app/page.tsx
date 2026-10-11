@@ -33,7 +33,8 @@ export default function Home() {
           <h1>Become better with people.</h1>
 
           <p className="lede">
-            Work through the difficult situations in your life and build practical people skills.
+            <span className="lede__clause">Work through the difficult situations in your life</span>{' '}
+            <span className="lede__clause">and build practical people skills.</span>
           </p>
 
           <Waitlist />

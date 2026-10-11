@@ -273,6 +273,14 @@ h1 {
   text-wrap: pretty;
 }
 
+/* Each clause is one unit, so the lede breaks between "in your life" and
+   "and build" instead of stranding the last words. A clause wider than a
+   narrow column still wraps inside itself, evenly. */
+.lede__clause {
+  display: inline-block;
+  text-wrap: balance;
+}
+
 .meta {
   margin: 46px 0 0;
   font-size: 11px;
@@ -680,9 +688,18 @@ h1 {
     transform: translate(-50%, -58%);
   }
 
-  /* wide enough that the hero column itself is the right measure: the lede
-     takes it and settles on two lines. The cap is the 620px hero's width in
-     ch, so a future hero change can't stretch this past a readable line. */
+  /* Wide enough for the headline on one line, so the column takes the
+     headline's width and the lede sits under it as two shorter lines. */
+  .hero {
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  h1 {
+    white-space: nowrap;
+  }
+
+  /* wide enough for the first clause on one line, too narrow for both */
   .lede {
     max-width: 52ch;
   }
@@ -723,22 +740,9 @@ h1 {
   }
 }
 
-/* past here the bowl is large enough that the copy can take its full measure */
-@media (min-width: 1360px) {
-  .hero {
-    max-width: 620px;
-  }
-}
-
 @media (min-width: 1024px) {
   .shell {
     padding: 136px 32px 56px;
-  }
-
-  .hero {
-    /* a touch narrower through the 1024–1359 band, so the bowl clears the
-       headline's corners there too */
-    max-width: 560px;
   }
 
   .wordmark {
