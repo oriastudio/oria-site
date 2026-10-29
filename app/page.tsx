@@ -30,16 +30,16 @@ export default function Home() {
             unoptimized
           />
 
-          <h1>Become better with people.</h1>
+          <h1>Understand others, privately.</h1>
 
           <p className="lede">
-            <span className="lede__clause">Work through the difficult situations in your life</span>{' '}
-            <span className="lede__clause">and build practical people skills.</span>
+            <span className="lede__clause">Your saved history is encrypted on your devices</span>{' '}
+            <span className="lede__clause">and in your own iCloud.</span>
           </p>
 
           <Waitlist />
 
-          <p className="meta">iOS &middot; Closed beta</p>
+          <p className="meta">Powered by Claude &middot; iOS &middot; Closed beta</p>
         </section>
       </main>
 

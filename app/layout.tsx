@@ -18,17 +18,17 @@ const instrumentSans = localFont({
 })
 
 const SITE = 'https://oriastudio.ai'
-const TITLE = 'Oria'
-const TAGLINE = 'Become better with people.'
+const TITLE = 'Oria: Your People Compass'
+const TAGLINE = 'Understand others, privately'
 const DESCRIPTION =
-  'Oria is a personal social intelligence app. Work through the difficult situations in your life and build practical people skills. iOS, in closed beta.'
+  'Understand partners, friends, family and coworkers with Oria. Powered by Claude. Your saved history is encrypted on your devices and in your own iCloud.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: { default: `${TITLE} — ${TAGLINE}`, template: `%s — ${TITLE}` },
   description: DESCRIPTION,
-  applicationName: TITLE,
-  keywords: ['Oria', 'social intelligence', 'people skills', 'interpersonal skills', 'relationships', 'private', 'iOS'],
+  applicationName: 'Oria',
+  keywords: ['Oria', 'people compass', 'relationships', 'friends', 'family', 'private', 'iOS'],
   authors: [{ name: 'Oria Studio LLC' }],
   creator: 'Oria Studio LLC',
   alternates: { canonical: '/' },
