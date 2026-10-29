@@ -9,17 +9,26 @@ Next.js 16 (App Router) · TypeScript · no CSS framework · no database.
 
 ## Adopted positioning
 
-Adopted by Ivy on October 5, 2026. Category: **personal social intelligence app**.
+Adopted by Ivy on October 29, 2026:
 
-> I’m building Oria, a personal social intelligence app that helps people become better with people. It works through difficult people situations, surfaces recurring patterns, and offers more effective ways to respond. The goal is to build lasting interpersonal skills and more fulfilling relationships.
-
-The public brand pair remains:
-
-> Become better with people.
+> Oria: Your People Compass
 >
-> Work through the difficult situations in your life and build practical people skills.
+> Understand others, privately
 
-Relationships may be an acquisition wedge; they do not define the entire app category. Use the pitch for founder and investor introductions, and the brand pair for this teaser page. Self-development is an intended outcome, not the product category. The positioning does not certify shipped practice features or proven learning outcomes. Current product scope remains owned by the [canonical Oria document](https://docs.google.com/document/d/16sk0OOR3Hqsb0aEJKO2Fo808K-eC5m4nBeCy0G_yk2s/edit).
+This supersedes the October 5 public brand pair, “Become better with people”
+and its difficult-situations/people-skills supporting line. Partners, friends,
+family and work are all in scope; the product is not only for couples.
+
+The teaser uses the adopted subtitle as its headline and the approved proof:
+“Your saved history is encrypted on your devices and in your own iCloud.”
+“Powered by Claude” supplies the capability signal. The encryption promise is
+about saved history; relevant text is processed online for replies and memory.
+No-training and zero retention are separate claims, and this page makes no
+zero-retention promise.
+
+[Strategy & Growth → Positioning](https://docs.google.com/document/d/1BsJntIfdSOL09Sxq20P6ioNlvPAE19379mL74HmE8jo/edit?tab=t.f1xtq1ailb5b)
+owns accepted external positioning. Product scope and privacy commitments remain
+owned by [Product & Guide](https://docs.google.com/document/d/16sk0OOR3Hqsb0aEJKO2Fo808K-eC5m4nBeCy0G_yk2s/edit).
 
 ## Deploying this the first time
 
