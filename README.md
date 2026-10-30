@@ -240,7 +240,8 @@ app/
   layout.tsx              metadata, self-hosted font
   page.tsx                the one page
   globals.css             design tokens + all styles
-  icon.svg                favicon
+  icon.png                favicon: the app's adopted Night O 3 icon, rounded
+  apple-icon.png          home-screen icon, 180px, full bleed (iOS rounds it)
   robots.ts, sitemap.ts
   api/subscribe/route.ts  waitlist → Resend
   fonts/                  Instrument Sans (OFL, see OFL.txt)
