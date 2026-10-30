@@ -688,18 +688,9 @@ h1 {
     transform: translate(-50%, -58%);
   }
 
-  /* Wide enough for the headline on one line, so the column takes the
-     headline's width and the lede sits under it as two shorter lines. */
-  .hero {
-    width: fit-content;
-    max-width: 100%;
-  }
-
-  h1 {
-    white-space: nowrap;
-  }
-
-  /* wide enough for the first clause on one line, too narrow for both */
+  /* The headline wraps to two balanced lines at every width: on one line it
+     is about 830px at 50px, wider than the bowl's open middle. The lede gets
+     room for each clause on its own line. */
   .lede {
     max-width: 52ch;
   }

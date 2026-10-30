@@ -30,11 +30,11 @@ export default function Home() {
             unoptimized
           />
 
-          <h1>Understand others, privately.</h1>
+          <h1>Clarity when people get complicated.</h1>
 
           <p className="lede">
-            <span className="lede__clause">Your saved history is encrypted on your devices</span>{' '}
-            <span className="lede__clause">and in your own iCloud.</span>
+            <span className="lede__clause">Oria gives you a private space to make sense</span>{' '}
+            <span className="lede__clause">of what’s going on with the people in your life.</span>
           </p>
 
           <Waitlist />

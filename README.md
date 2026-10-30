@@ -9,19 +9,28 @@ Next.js 16 (App Router) · TypeScript · no CSS framework · no database.
 
 ## Adopted positioning
 
-Adopted by Ivy on October 29, 2026:
+Adopted by Ivy on October 29, 2026 for the App Store:
 
 > Oria: Your People Compass
+
+Adopted by Ivy on October 30, 2026 for this page, the README and the pitch:
+
+> Clarity when people get complicated.
 >
-> Understand others, privately
+> Oria gives you a private space to make sense of what’s going on with the
+> people in your life.
 
-This supersedes the October 5 public brand pair, “Become better with people”
-and its difficult-situations/people-skills supporting line. Partners, friends,
-family and work are all in scope; the product is not only for couples.
+The headline replaces “Understand others, privately”, which pointed the reader
+at other people as if Oria reads them. It also replaces the October 5 public
+brand pair, “Become better with people” and its people-skills supporting line.
+The App Store subtitle is being reworked separately. Partners, friends, family
+and work are all in scope; the product is not only for couples.
 
-The teaser uses the adopted subtitle as its headline and the approved proof:
-“Your saved history is encrypted on your devices and in your own iCloud.”
-“Powered by Claude” supplies the capability signal. The encryption promise is
+The headline wraps to two balanced lines at every width. On one line it is
+about 830px wide at 50px, wider than the bowl's open middle, so it would cross
+the arc. “Private space” carries privacy on the page. The approved proof, “Your
+saved history is encrypted on your devices and in your own iCloud.”, moves to
+the description meta tag beside “Powered by Claude”. The encryption promise is
 about saved history; relevant text is processed online for replies and memory.
 No-training and zero retention are separate claims, and this page makes no
 zero-retention promise.

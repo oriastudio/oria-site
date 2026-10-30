@@ -19,9 +19,9 @@ const instrumentSans = localFont({
 
 const SITE = 'https://oriastudio.ai'
 const TITLE = 'Oria: Your People Compass'
-const TAGLINE = 'Understand others, privately'
+const TAGLINE = 'Clarity when people get complicated'
 const DESCRIPTION =
-  'Understand partners, friends, family and coworkers with Oria. Powered by Claude. Your saved history is encrypted on your devices and in your own iCloud.'
+  'Oria gives you a private space to make sense of what’s going on with the people in your life. Powered by Claude. Your saved history is encrypted on your devices and in your own iCloud.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
