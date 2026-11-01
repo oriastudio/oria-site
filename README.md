@@ -89,6 +89,7 @@ flow works, then move to the verified domain before launch.
    | `RESEND_API_KEY` | the key from step 2                         |
    | `WAITLIST_TO`    | `hello@oriastudio.ai`                       |
    | `WAITLIST_FROM`  | `Oria Waitlist <waitlist@oriastudio.ai>`   |
+   | `RESEND_WAITLIST_SEGMENT_ID` | the Waitlist segment's ID (see How the waitlist works) |
 
 3. Deploy.
 
@@ -118,9 +119,20 @@ their address is set as `Reply-To`.
 ## How the waitlist works
 
 `app/api/subscribe/route.ts` is a serverless function. It validates the
-address, then POSTs to the Resend API, which sends one message to
-`WAITLIST_TO`. Nothing is stored anywhere — **the inbox is the list.** Export
-it by searching `hello@oriastudio.ai` for subject `Oria waitlist —`.
+address, then keeps it as a contact in Resend's **Waitlist** segment
+(`RESEND_WAITLIST_SEGMENT_ID`). **That segment is the list:** the owner's
+Feedback page on the system dashboard reads it, and a Resend broadcast to it
+reaches everyone on it, with the unsubscribe link Resend adds. This site stores
+nothing itself.
+
+Adding a contact needs a **full access** key; a sending-only key can send
+mail but not add contacts. If the segment ID is unset, or Resend refuses the
+contact, the route falls back to one message to `WAITLIST_TO`, as before the
+segment existed, so a sign-up is never lost; the dashboard reads those mails
+too (subject `Oria waitlist —`).
+
+The address never reaches the logs: a failure logs Resend's status and error
+name only.
 
 Three things guard the endpoint:
 
