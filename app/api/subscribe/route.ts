@@ -6,6 +6,11 @@ export const dynamic = 'force-dynamic'
 
 const TO = process.env.WAITLIST_TO || 'hello@oriastudio.ai'
 const FROM = process.env.WAITLIST_FROM || 'Oria Waitlist <waitlist@oriastudio.ai>'
+// The Resend segment that holds the waitlist. Once it is set, each sign-up is
+// kept as a Resend contact in it (the list the owner's dashboard reads and a
+// broadcast goes to) instead of an email to hello@. Unset, sign-ups arrive by
+// email as before.
+const SEGMENT = process.env.RESEND_WAITLIST_SEGMENT_ID?.trim() || ''
 
 // Conservative, single-@ address check. Length-capped before the regex so a
 // pathological input can't spend time in the matcher.
@@ -52,8 +57,27 @@ export async function POST(req: Request) {
 
   const key = process.env.RESEND_API_KEY
   if (!key) {
-    console.error('[waitlist] RESEND_API_KEY is not set — signup was not delivered:', email)
+    // Never the address: logs are kept by Vercel and read by more people than the list is.
+    console.error('[waitlist] RESEND_API_KEY is not set, so a signup was not delivered')
     return bad(503, 'The waitlist isn’t accepting signups just yet. Try again shortly.')
+  }
+
+  if (SEGMENT) {
+    try {
+      const res = await fetch('https://api.resend.com/contacts', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${key}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, unsubscribed: false, segments: [{ id: SEGMENT }] }),
+      })
+      if (res.ok) return NextResponse.json({ ok: true })
+      // Fall through to the email, so a sign-up is never lost to a contact error.
+      console.error('[waitlist] Resend did not add the contact:', res.status, await errorName(res))
+    } catch (err) {
+      console.error('[waitlist] adding the contact failed:', errorKind(err))
+    }
   }
 
   const when = new Date().toISOString()
@@ -90,16 +114,30 @@ export async function POST(req: Request) {
     })
 
     if (!res.ok) {
-      const detail = await res.text().catch(() => '')
-      console.error('[waitlist] Resend rejected the send:', res.status, detail.slice(0, 500))
+      console.error('[waitlist] Resend rejected the send:', res.status, await errorName(res))
       return bad(502, 'We couldn’t add you just then. Try again in a moment.')
     }
 
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('[waitlist] send failed:', err)
+    console.error('[waitlist] send failed:', errorKind(err))
     return bad(502, 'We couldn’t add you just then. Try again in a moment.')
   }
+}
+
+// Resend's error name only (such as `validation_error`): its message can repeat
+// the address it was given, and no address belongs in the logs.
+async function errorName(res: Response): Promise<string> {
+  try {
+    const body = (await res.json()) as { name?: unknown }
+    return typeof body.name === 'string' ? body.name.slice(0, 60) : 'no error name'
+  } catch {
+    return 'unreadable error'
+  }
+}
+
+function errorKind(err: unknown): string {
+  return err instanceof Error ? err.name : 'unknown error'
 }
 
 function escapeHtml(value: string) {
