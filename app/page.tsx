@@ -45,7 +45,7 @@ export default function Home() {
 
       <footer className="foot">
         <span>&copy; {new Date().getFullYear()} Oria Studio LLC</span>
-        <a href="mailto:hello@oriastudio.ai">hello@oriastudio.ai</a>
+        <a href="mailto:support@oriastudio.ai">support@oriastudio.ai</a>
       </footer>
     </>
   )
