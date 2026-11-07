@@ -3,6 +3,7 @@ import ConstellationCrown from '@/components/ConstellationCrown'
 import SkyHalo from '@/components/SkyHalo'
 import StarField from '@/components/StarField'
 import Waitlist from '@/components/Waitlist'
+import SiteFooter from '@/components/SiteFooter'
 
 export default function Home() {
   return (
@@ -43,10 +44,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="foot">
-        <span>&copy; {new Date().getFullYear()} Oria Studio LLC</span>
-        <a href="mailto:hello@oriastudio.ai">hello@oriastudio.ai</a>
-      </footer>
+      <SiteFooter />
     </>
   )
 }
