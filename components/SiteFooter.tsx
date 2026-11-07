@@ -7,7 +7,7 @@ export default function SiteFooter() {
       <nav className="foot__links" aria-label="Legal and contact">
         <Link href="/privacy">Privacy</Link>
         <Link href="/terms">Terms</Link>
-        <a href="mailto:hello@oriastudio.ai">hello@oriastudio.ai</a>
+        <a href="mailto:support@oriastudio.ai">support@oriastudio.ai</a>
       </nav>
     </footer>
   )

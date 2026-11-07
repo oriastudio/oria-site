@@ -8,7 +8,7 @@ export const legalPolicies = {
       {
         "title": "Who this policy covers",
         "paragraphs": [
-          "Oria Studio LLC provides oriastudio.ai and its waitlist. This policy explains information handled through this website and requests for an invitation. The Oria app has its own Terms and Privacy Policy, available in the app before you agree to use it. Contact hello@oriastudio.ai with a privacy question or request."
+          "Oria Studio LLC provides oriastudio.ai and its waitlist. This policy explains information handled through this website and requests for an invitation. The Oria app has its own Terms and Privacy Policy, available in the app before you agree to use it. Contact support@oriastudio.ai with a privacy question or request."
         ]
       },
       {
@@ -20,14 +20,14 @@ export const legalPolicies = {
       {
         "title": "How the waitlist works",
         "paragraphs": [
-          "We use your address to manage your request and contact you about access to Oria. We use Resend to store waitlist contacts and send email. Your address is either added to a Resend contact list or sent to us in a signup notification, which may include the signup time and approximate country. Our email provider also processes and stores notifications sent to hello@oriastudio.ai. Vercel hosts the website and handles technical and security information for its operation.",
+          "We use your address to manage your request and contact you about access to Oria. We use Resend to store waitlist contacts and send email. Your address is either added to a Resend contact list or sent to us in a signup notification, which may include the signup time and approximate country. Our email provider also processes and stores notifications sent to support@oriastudio.ai. Vercel hosts the website and handles technical and security information for its operation.",
           "Joining the waitlist does not send a conversation to an AI provider and does not grant the app permission to process your content with AI. That choice is presented separately in the app."
         ]
       },
       {
         "title": "Retention and your choices",
         "paragraphs": [
-          "Waitlist details remain while we manage the list, unless you ask us to remove your address. Email hello@oriastudio.ai to ask us to remove your waitlist entry and associated signup notifications, correct your address, or provide access to information we hold. We may retain information required for legal or security obligations. Providers may keep records under their own policies and legal obligations.",
+          "Waitlist details remain while we manage the list, unless you ask us to remove your address. Email support@oriastudio.ai to ask us to remove your waitlist entry and associated signup notifications, correct your address, or provide access to information we hold. We may retain information required for legal or security obligations. Providers may keep records under their own policies and legal obligations.",
           "To protect the form, the website counts requests by IP address in server memory using ten-minute windows. It does not create a persistent visitor account. We do not sell waitlist addresses or use them for unrelated marketing."
         ]
       },
@@ -40,7 +40,7 @@ export const legalPolicies = {
       {
         "title": "Age and changes",
         "paragraphs": [
-          "Oria and its waitlist are for adults 18 and over. If you believe a child has submitted information, contact hello@oriastudio.ai without including unnecessary sensitive details. We will update this policy when our website's practices change and show the new effective date here."
+          "Oria and its waitlist are for adults 18 and over. If you believe a child has submitted information, contact support@oriastudio.ai without including unnecessary sensitive details. We will update this policy when our website's practices change and show the new effective date here."
         ]
       }
     ]
@@ -88,7 +88,7 @@ export const legalPolicies = {
       {
         "title": "Contact",
         "paragraphs": [
-          "For questions about this website, these terms, or a problem with your request, contact hello@oriastudio.ai. Include only the information needed to explain your request."
+          "For questions about this website, these terms, or a problem with your request, contact support@oriastudio.ai. Include only the information needed to explain your request."
         ]
       }
     ]
