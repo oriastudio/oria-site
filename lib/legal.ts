@@ -20,7 +20,7 @@ export const legalPolicies = {
       {
         "title": "How the waitlist works",
         "paragraphs": [
-          "We use your address to manage your request and contact you about access to Oria. We use Resend to store waitlist contacts and send email. Your address is either added to a Resend contact list or sent to us in a signup notification, which may include the signup time and approximate country. Our email provider also processes and stores notifications sent to support@oriastudio.ai. Vercel hosts the website and handles technical and security information for its operation.",
+          "We use your address to manage your request and contact you about access to Oria. We use Resend to store waitlist contacts and send email. Your address is either added to a Resend contact list or sent to us in a signup notification, which may include the signup time and approximate country. Our email provider also processes and stores those signup notifications. Vercel hosts the website and handles technical and security information for its operation.",
           "Joining the waitlist does not send a conversation to an AI provider and does not grant the app permission to process your content with AI. That choice is presented separately in the app."
         ]
       },
