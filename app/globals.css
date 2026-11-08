@@ -515,6 +515,102 @@ h1 {
   border-radius: 2px;
 }
 
+.foot__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0 16px;
+}
+
+.foot__links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.legal__header,
+.legal {
+  width: min(100%, 46rem);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+.legal__header {
+  padding-top: 24px;
+}
+
+.legal__header a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--text-primary);
+  font-size: 24px;
+  text-decoration: none;
+}
+
+.legal {
+  flex: 1;
+  padding-block: 32px 64px;
+  overflow-wrap: anywhere;
+}
+
+.legal h1 {
+  margin: 0;
+  font-size: clamp(32px, 5vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.legal__date {
+  margin: 16px 0 40px;
+  color: var(--text-tertiary);
+  font-size: 14px;
+}
+
+.legal section + section {
+  margin-top: 32px;
+}
+
+.legal h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.legal section p {
+  margin: 0 0 16px;
+  color: var(--text-secondary);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.legal a {
+  color: var(--accent-emphasis);
+  text-underline-offset: 4px;
+}
+
+.legal a:focus-visible,
+.legal__header a:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 4px;
+}
+
+.legal__sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 24px;
+}
+
+.legal__sources a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+}
+
 /* ============================================================
    Motion — restrained. Stars breathe; nothing flashes.
    ============================================================ */
