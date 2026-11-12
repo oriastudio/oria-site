@@ -33,34 +33,38 @@ function clientIp(req: Request): string {
 // with one read-only Resend call, cached so a burst of checks costs one call.
 // It answers in a word; the reason goes to the logs.
 const HEALTH_TTL_MS = 5 * 60 * 1000
-let health: { at: number; status: number; body: { ok: boolean; problem?: string } } | null = null
+type Health = { status: number; body: { ok: boolean; problem?: string } }
+// The promise, not its result, is cached, so checks arriving together share
+// one Resend call instead of each spending the team's rate limit.
+let health: { at: number; result: Promise<Health> } | null = null
 
 export async function GET() {
   const now = Date.now()
   if (!health || now - health.at > HEALTH_TTL_MS) {
-    health = { at: now, ...(await checkResend()) }
+    health = { at: now, result: checkResend() }
   }
-  return NextResponse.json(health.body, {
-    status: health.status,
-    headers: { 'Cache-Control': 'no-store' },
-  })
+  const { status, body } = await health.result
+  return NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } })
 }
 
-async function checkResend(): Promise<{ status: number; body: { ok: boolean; problem?: string } }> {
+async function checkResend(): Promise<Health> {
   const checked = resendKey()
   if (!checked.ok) {
     console.error(`[waitlist health] ${checked.detail}`)
     return { status: 503, body: { ok: false, problem: 'key' } }
   }
-  // With no segment, sign-ups go by email; the domain list is a read that any
-  // full access key can make.
+  // With no segment, sign-ups go by email, which a sending-only key can do but
+  // a read cannot: Resend answering `restricted_api_key` proves the key is
+  // real, which is all email mode needs.
   const url = SEGMENT
     ? `https://api.resend.com/segments/${encodeURIComponent(SEGMENT)}`
     : 'https://api.resend.com/domains'
   try {
     const res = await fetch(url, { headers: { Authorization: `Bearer ${checked.key}` } })
     if (res.ok) return { status: 200, body: { ok: true } }
-    console.error('[waitlist health] Resend refused the check:', res.status, await errorName(res))
+    const name = await errorName(res)
+    if (!SEGMENT && name === 'restricted_api_key') return { status: 200, body: { ok: true } }
+    console.error('[waitlist health] Resend refused the check:', res.status, name)
     const problem = res.status === 401 || res.status === 403 ? 'key' : SEGMENT ? 'segment' : 'resend'
     return { status: 503, body: { ok: false, problem } }
   } catch (err) {
