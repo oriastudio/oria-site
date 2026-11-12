@@ -1,5 +1,7 @@
+import { timingSafeEqual } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { allow } from '@/lib/rate-limit'
+import { fetchFailure, resendKey } from '@/lib/resend'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -25,6 +27,59 @@ function clientIp(req: Request): string {
   const fwd = req.headers.get('x-forwarded-for')
   if (fwd) return fwd.split(',')[0]!.trim()
   return req.headers.get('x-real-ip')?.trim() || 'unknown'
+}
+
+// Health check for the uptime monitor: can a sign-up be kept right now? It
+// proves the key is well formed and accepted, and that the segment exists,
+// with one read-only Resend call, cached so a burst of checks costs one call.
+// It answers in a word; the reason goes to the logs.
+const HEALTH_TTL_MS = 5 * 60 * 1000
+type Health = { status: number; body: { ok: boolean; problem?: string } }
+// The promise, not its result, is cached, so checks arriving together share
+// one Resend call instead of each spending the team's rate limit.
+let health: { at: number; result: Promise<Health> } | null = null
+
+// Only the monitor may make the check spend a Resend call: each serverless
+// instance keeps its own cache, so an open endpoint would let a burst across
+// instances eat the rate limit sign-ups share. Without the token it is a 404.
+const HEALTH_TOKEN = process.env.WAITLIST_HEALTH_TOKEN?.trim() || ''
+
+export async function GET(req: Request) {
+  if (!HEALTH_TOKEN || !sameSecret(req.headers.get('authorization') ?? '', `Bearer ${HEALTH_TOKEN}`)) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  }
+  const now = Date.now()
+  if (!health || now - health.at > HEALTH_TTL_MS) {
+    health = { at: now, result: checkResend() }
+  }
+  const { status, body } = await health.result
+  return NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } })
+}
+
+async function checkResend(): Promise<Health> {
+  const checked = resendKey()
+  if (!checked.ok) {
+    console.error(`[waitlist health] ${checked.detail}`)
+    return { status: 503, body: { ok: false, problem: 'key' } }
+  }
+  // With no segment, sign-ups go by email, which a sending-only key can do but
+  // a read cannot: Resend answering `restricted_api_key` proves the key is
+  // real, which is all email mode needs.
+  const url = SEGMENT
+    ? `https://api.resend.com/segments/${encodeURIComponent(SEGMENT)}`
+    : 'https://api.resend.com/domains'
+  try {
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${checked.key}` } })
+    if (res.ok) return { status: 200, body: { ok: true } }
+    const name = await errorName(res)
+    if (!SEGMENT && name === 'restricted_api_key') return { status: 200, body: { ok: true } }
+    console.error('[waitlist health] Resend refused the check:', res.status, name)
+    const problem = res.status === 401 || res.status === 403 ? 'key' : SEGMENT ? 'segment' : 'resend'
+    return { status: 503, body: { ok: false, problem } }
+  } catch (err) {
+    console.error('[waitlist health] Resend unreachable:', fetchFailure(err))
+    return { status: 503, body: { ok: false, problem: 'resend' } }
+  }
 }
 
 export async function POST(req: Request) {
@@ -55,12 +110,13 @@ export async function POST(req: Request) {
     })
   }
 
-  const key = process.env.RESEND_API_KEY
-  if (!key) {
+  const checked = resendKey()
+  if (!checked.ok) {
     // Never the address: logs are kept by Vercel and read by more people than the list is.
-    console.error('[waitlist] RESEND_API_KEY is not set, so a signup was not delivered')
+    console.error(`[waitlist] ${checked.detail}, so a signup was not delivered`)
     return bad(503, 'The waitlist isn’t accepting signups just yet. Try again shortly.')
   }
+  const key = checked.key
 
   if (SEGMENT) {
     try {
@@ -76,7 +132,7 @@ export async function POST(req: Request) {
       // Fall through to the email, so a sign-up is never lost to a contact error.
       console.error('[waitlist] Resend did not add the contact:', res.status, await errorName(res))
     } catch (err) {
-      console.error('[waitlist] adding the contact failed:', errorKind(err))
+      console.error('[waitlist] adding the contact failed:', fetchFailure(err))
     }
   }
 
@@ -120,7 +176,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('[waitlist] send failed:', errorKind(err))
+    console.error('[waitlist] send failed:', fetchFailure(err))
     return bad(502, 'We couldn’t add you just then. Try again in a moment.')
   }
 }
@@ -136,14 +192,16 @@ async function errorName(res: Response): Promise<string> {
   }
 }
 
-function errorKind(err: unknown): string {
-  return err instanceof Error ? err.name : 'unknown error'
-}
-
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
+}
+
+function sameSecret(given: string, expected: string): boolean {
+  const a = Buffer.from(given)
+  const b = Buffer.from(expected)
+  return a.length === b.length && timingSafeEqual(a, b)
 }
