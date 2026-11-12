@@ -22,9 +22,12 @@ test('a cleaned key is a valid Authorization header', () => {
   assert.doesNotThrow(() => new Headers({ Authorization: `Bearer ${checked.key}` }))
 })
 
+// Explicit values only: `resendKey(undefined)` reads RESEND_API_KEY, which is
+// set when Vercel runs this before a production build.
 test('a missing key is named, not thrown', () => {
-  assert.deepEqual(resendKey(undefined).ok, false)
-  assert.equal((resendKey('') as { problem: string }).problem, 'missing')
+  for (const empty of ['', ' \n ']) {
+    assert.equal((resendKey(empty) as { problem: string }).problem, 'missing')
+  }
 })
 
 test('a malformed key is described without repeating it', () => {
