@@ -287,7 +287,6 @@ h1 {
   line-height: 16px;
   font-weight: 500;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
   /* sand/400, not sand/600: at 11px this has to clear 4.5:1 on the page ground */
   color: var(--text-tertiary);
 }

@@ -40,7 +40,7 @@ export default function Home() {
 
           <Waitlist />
 
-          <p className="meta">Powered by Claude &middot; iOS &middot; Closed beta</p>
+          <p className="meta">iOS closed Beta</p>
         </section>
       </main>
 
