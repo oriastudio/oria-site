@@ -140,13 +140,15 @@ is not shaped like a Resend key, logging what is wrong with it but never a
 character of it. On November 1 a re-pasted key failed this way inside fetch,
 as a bare `TypeError`, and no sign-up was kept from then until the fix.
 
-`GET /api/subscribe` is the health check: `200 {"ok":true}` when a sign-up can
-be kept right now (the key is well formed and accepted, the segment exists),
-`503` with `problem` (`key`, `segment` or `resend`) when not. It makes one
-read-only Resend call, cached for five minutes. A Sentry uptime monitor polls
-it, so a broken key or segment reaches someone within the hour instead of
-waiting for a visitor to notice. After changing any Resend variable, redeploy
-and open `https://oriastudio.ai/api/subscribe`.
+`GET /api/subscribe` with `Authorization: Bearer $WAITLIST_HEALTH_TOKEN` is
+the health check: `200 {"ok":true}` when a sign-up can be kept right now (the
+key is well formed and accepted, the segment exists), `503` with `problem`
+(`key`, `segment` or `resend`) when not. It makes one read-only Resend call,
+cached for five minutes; without the token it answers 404 and calls nothing,
+so nobody else can spend the Resend rate limit sign-ups share. The Sentry
+uptime monitor "oriastudio.ai waitlist" sends the token, so a broken key or
+segment raises an alert instead of waiting for a visitor to notice. After
+changing any Resend variable, redeploy and check that monitor.
 
 `npm test` runs `tests/`; `npm run build` runs it first, so Vercel refuses a
 deploy whose tests fail.

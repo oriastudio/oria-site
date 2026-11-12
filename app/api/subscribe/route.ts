@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { allow } from '@/lib/rate-limit'
 import { fetchFailure, resendKey } from '@/lib/resend'
@@ -38,7 +39,15 @@ type Health = { status: number; body: { ok: boolean; problem?: string } }
 // one Resend call instead of each spending the team's rate limit.
 let health: { at: number; result: Promise<Health> } | null = null
 
-export async function GET() {
+// Only the monitor may make the check spend a Resend call: each serverless
+// instance keeps its own cache, so an open endpoint would let a burst across
+// instances eat the rate limit sign-ups share. Without the token it is a 404.
+const HEALTH_TOKEN = process.env.WAITLIST_HEALTH_TOKEN?.trim() || ''
+
+export async function GET(req: Request) {
+  if (!HEALTH_TOKEN || !sameSecret(req.headers.get('authorization') ?? '', `Bearer ${HEALTH_TOKEN}`)) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  }
   const now = Date.now()
   if (!health || now - health.at > HEALTH_TTL_MS) {
     health = { at: now, result: checkResend() }
@@ -189,4 +198,10 @@ function escapeHtml(value: string) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
+}
+
+function sameSecret(given: string, expected: string): boolean {
+  const a = Buffer.from(given)
+  const b = Buffer.from(expected)
+  return a.length === b.length && timingSafeEqual(a, b)
 }
